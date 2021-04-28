@@ -1,6 +1,6 @@
 """
 Carolyn McNabb 
-April 2020
+April 2021
 GUTMIC BRAIN DATA PILOT ANALYSIS 
 0_rename_t1w.py will rename the files in the anat folders to include "T1w" before the .nii.gz extension
 """
