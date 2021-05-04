@@ -1,0 +1,69 @@
+{
+    "descriptions": [
+	{
+        "dataType": "anat",
+        "modalityLabel": "T1w",
+        "criteria": {
+	"ImageType":  ["ORIGINAL", "PRIMARY", "M", "NORM", "DIS2D"],
+	"SequenceName": "*tfl3d1_16ns*",
+	"SeriesDescription": "t1_mprage*"
+            }
+        },
+        {
+        "dataType": "func",
+        "modalityLabel": "bold",
+        "customLabels": "task-rest",
+        "criteria": {
+            "SeriesDescription": "*Resting_ep2d_bold*"
+            },
+ 	"sidecarChanges": {
+                "TaskName": "rest"
+		}
+        },
+        {
+        "dataType": "fmap",
+        "modalityLabel": "magnitude1",
+        
+        "criteria": {
+	"SeriesDescription": "gre_field_mapping_32ch", 		 "SidecarFilename": "*_e1.*"
+            },
+        "intendedFor": 0
+        },
+	{
+	"dataType": "fmap",
+        "modalityLabel": "magnitude2",
+        
+        "criteria": {
+	"SeriesDescription": "gre_field_mapping_32ch", 		 "SidecarFilename": "*_e2.*"
+            },
+        "intendedFor": 0
+        },
+        {
+        "dataType": "fmap",
+        "modalityLabel": "phasediff",
+        
+        "criteria": {
+            "SidecarFilename": "*_e2_ph*"
+            },
+        "intendedFor": 0
+        },
+        {
+        "dataType": "dwi",
+        "modalityLabel": "dwi",
+        "customLabels": "dir-up",
+        "criteria": {
+            "SequenceName": "*ep_b0",
+	"ImageType": ["ORIGINAL", "PRIMARY", "DIFFUSION", "NONE", "ND", "NORM", "MOSAIC"],
+		"SeriesDescription": "*ep2d_diff*"
+            }
+        },
+        {
+        "dataType": "dwi",
+        "modalityLabel": "dwi",
+        "customLabels": "dir-down",
+        "criteria": {
+		"SeriesDescription": "*diff_blip_down*"
+            }
+        }
+    ]
+}
