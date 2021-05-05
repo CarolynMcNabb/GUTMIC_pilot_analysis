@@ -7,7 +7,7 @@
 
 raw_path=/storage/shared/research/cinn/2018/GUTMIC/raw
 code_path=/storage/shared/research/cinn/2018/GUTMIC/CM_scripts/code
-data_dir=/storage/shared/research/cinn/2018/GUTMIC/CM_MRS
+data_dir=/storage/shared/research/cinn/2018/GUTMIC/func_diff
 
 cd $raw_path
 subjects=( $(ls -d GUTMIC_* )) 
