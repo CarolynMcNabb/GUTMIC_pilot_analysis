@@ -5,7 +5,7 @@
 
 #!/bin/bash
 
-module load fsl6.0 #load fsl - if you are using a machine other than the VM at University of Reading, you can comment out this line.
+module load fsl6.0 #load fsl - if you are using a machine other than the virtual machine at University of Reading, you can comment out this line.
 
 orig_path=/storage/shared/research/cinn/2018/GUTMIC/func_diff
 derivative_path=/storage/shared/research/cinn/2018/GUTMIC/func_diff/derivatives/TBSS/preprocessed
