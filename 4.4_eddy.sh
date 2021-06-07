@@ -22,6 +22,6 @@ s=${i//$"sub-"/}
 
 #eddy current correction
 echo "Correcting eddy current-induced distortions and subject movements for ${i} using FSL's eddy"
-eddy_openmp --imain=${orig_path}/${i}/dwi/${i}_dir-up_dwi.nii.gz --mask=${derivative_path}/${i}/hifi_b0_brain_mask --acqp=${code_path}/acq_param.txt --index=${code_path}/index.txt --bvecs=${derivative_path}/${i}/bvecs --bvals=${derivative_path}/${i}/bvals --topup=${derivative_path}/${i}/topup_output --ol_type=both --mb=4 --repol --out=${derivative_path}/${i}/eddy_corrected_data --slspec=${code_path}/slspec.txt 
+eddy_openmp --imain=${orig_path}/${i}/dwi/${i}_dir-up_dwi.nii.gz --mask=${derivative_path}/${i}/hifi_b0_brain_mask --acqp=${code_path}/acq_param.txt --index=${code_path}/index.txt --bvecs=${derivative_path}/${i}/bvecs --bvals=${derivative_path}/${i}/bvals --topup=${derivative_path}/${i}/topup_output --ol_type=both --mb=4 --repol --out=${derivative_path}/${i}/eddy_corrected_data 
 
 done
