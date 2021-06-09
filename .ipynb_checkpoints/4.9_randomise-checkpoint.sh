@@ -15,12 +15,12 @@ GLM_path=/storage/shared/research/cinn/2018/GUTMIC/CM_scripts/GLMs
 
 #run randomise to evaluate correlations between FA and shannon index of diversity – the T2 option tells FSL that the images are T2 images 
 echo "Running randomise for Shannon index of diversity"
-randomise -i ${stats_path}/all_FA_skeletonised -o tbss -m ${stats_path}/mean_FA_skeleton_mask -d ${GLM_path}/TBSS_shannon.mat -t ${GLM_path}/TBSS_shannon.con -n 500 --T2
+randomise -i ${stats_path}/all_FA_skeletonised -o ${stats_path}/shannon -m ${stats_path}/mean_FA_skeleton_mask -d ${GLM_path}/TBSS_shannon.mat -t ${GLM_path}/TBSS_shannon.con -n 500 --T2
 
-#run randomise to evaluate correlations between FA and shannon index of diversity – the T2 option tells FSL that the images are T2 images 
+#run randomise to evaluate correlations between FA and OTUs index of diversity – the T2 option tells FSL that the images are T2 images 
 echo "Running randomise for OTUs"
-randomise -i ${stats_path}/all_FA_skeletonised -o tbss -m ${stats_path}/mean_FA_skeleton_mask -d ${GLM_path}/TBSS_otus.mat -t ${GLM_path}/TBSS_otus.con -n 500 --T2
+randomise -i ${stats_path}/all_FA_skeletonised -o ${stats_path}/otus -m ${stats_path}/mean_FA_skeleton_mask -d ${GLM_path}/TBSS_otus.mat -t ${GLM_path}/TBSS_otus.con -n 500 --T2
 
-#run randomise to evaluate correlations between FA and shannon index of diversity – the T2 option tells FSL that the images are T2 images 
+#run randomise to evaluate correlations between FA and faith index of diversity – the T2 option tells FSL that the images are T2 images 
 echo "Running randomise for faith"
-randomise -i ${stats_path}/all_FA_skeletonised -o tbss -m ${stats_path}/mean_FA_skeleton_mask -d ${GLM_path}/TBSS_faith.mat -t ${GLM_path}/TBSS_faith.con -n 500 --T2
+randomise -i ${stats_path}/all_FA_skeletonised -o ${stats_path}/faith -m ${stats_path}/mean_FA_skeleton_mask -d ${GLM_path}/TBSS_faith.mat -t ${GLM_path}/TBSS_faith.con -n 500 --T2
