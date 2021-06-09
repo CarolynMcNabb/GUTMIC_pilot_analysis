@@ -1,6 +1,3 @@
-# GUTMIC_pilot_analysis
-Pipeline will be finalised at a later date - for now, scripts are uploaded as they are written.
-
 CAROLYN MCNABB 2021
 GutBrainGABA pre-processing pipeline
 **Uses scripts available at https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
@@ -237,8 +234,10 @@ bet hifi_b0.nii.gz hifi_b0_brain -f 0.4 -m
 4.5. Get mean motion parameters for each participant, including mean motion from first volume and mean motion from previous volume. In the terminal window, type:
 4.5_motion.sh
 
-4.6. Extract outlier information and descriptive stats from motion data. These data need to be reported along with any results. See doi: 10.1016/j.neuroimage.2018.02.041 . In R, run the following script:
+4.6. Extract outlier information and descriptive stats from motion data. These data need to be reported along with any results. See doi: 10.1016/j.neuroimage.2018.02.041. In addition, use these values, along with gut diversity measures, to create csv files that can be copied into FSL’s GLM gui to create .mat and .con files for use in FSL’s Randomise. In R, run the following scripts:
 4.6_outliers.R
+4.6_GLMsetup.R
+	Notes: GLM files can be found in the GLMs folder in the github directory https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
 
 4.7. Fit diffusion tensors to the eddy-corrected data. In the terminal window, type:
 4.7_dtifit.sh
@@ -247,5 +246,5 @@ bet hifi_b0.nii.gz hifi_b0_brain -f 0.4 -m
 4.8_TBSS.sh
 	Notes: this script runs several different commands and requires user interaction to move onto the next stage of analysis. Read the instructions in the terminal and respond when requested.
 
-
-
+4.9 Run nonparametric permutation inference on the TBSS output using the GLM files available in the GLMs directory (created using FSL's Glm tool). In the terminal window, type:
+4.9_randomise.sh
