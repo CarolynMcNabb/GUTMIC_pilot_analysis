@@ -47,7 +47,7 @@ echo "Running tbss step 3"
 tbss_3_postreg -S
 
 #make sure the threshold of 0.2 is appropriate for the mean skeleton. If not, it will need to be adjusted.
-fsleyes ${analysis_path}/stats/all_FA -b 0,0.8 ${analysis_path}/stats/mean_FA_skeleton -b 0.2,0.8 -l Green &
+fsleyes ${analysis_path}/stats/all_FA --displayRange 0.0 0.8 ${analysis_path}/stats/mean_FA_skeleton --displayRange 0.2 0.8 --cmap green & 
 
 #ask for user input before moving to next stage of analysis
 echo "Is the threshold of 0.2 appropriate for the mean skeleton? If the registration has worked well you should see that in general each subject's major tracts are reasonably well aligned to the relevant parts of the skeleton. If you are happy to use 0.2, just type y, otherwise, type the new threshold:"
@@ -63,4 +63,3 @@ else
         #store threshold in a file called thresh.txt
         echo "Threshold used for tbss_4_prestats was ${input}" >> ${analysis_path}/thresh.txt
 fi
-
