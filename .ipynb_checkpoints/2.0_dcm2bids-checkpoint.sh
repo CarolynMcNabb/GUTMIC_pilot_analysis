@@ -1,7 +1,7 @@
 #Carolyn McNabb 
 #April 2021
 #GUTMIC BRAIN DATA PILOT ANALYSIS 
-#0_dcm2bids.sh will run dcm2bids to convert all dicom images in the raw data file into BIDS formatted nifti images
+#2.0_dcm2bids.sh will run dcm2bids to convert all dicom images in the raw data file into BIDS formatted nifti images
 
 #!/bin/bash
 

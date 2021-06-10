@@ -2,7 +2,7 @@
 Carolyn McNabb 
 April 2021
 GUTMIC BRAIN DATA PILOT ANALYSIS 
-1_validate_BIDS.py will go into every subject folder in the func_diff directory and determine whether the filenames adhere to BIDS naming conventions.
+2.1_validate_BIDS.py will go into every subject folder in the func_diff directory and determine whether the filenames adhere to BIDS naming conventions.
 
 """
 from bids_validator import BIDSValidator
