@@ -1,54 +1,73 @@
-CAROLYN MCNABB 2021
-GutBrainGABA pre-processing pipeline
-**Uses scripts available at https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
+## GutBrainGABA pre-processing pipeline
 
-VM setup
+#### CAROLYN MCNABB 2021
+Uses scripts available at https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
+
+
+###  VM setup
 1.1. Create Vanilla VM in nutanix https://rrc.reading.ac.uk:9440/console/#login 
 1.2. Open VM in NoMachine by pasting IP address from Nutanix
 1.3. Open Terminal window
+```
 rm -r ~/.mozilla #to clear any open firefox applications
+```
 
-Convert dicoms to BIDS format
+### Convert dicoms to BIDS format
 N.B. Conversion of diffusion data to BIDS format may later be updated to use ADWI-BIDS https://arxiv.org/pdf/2103.14485.pdf 
 
 BIDS filenames must follow this pattern:
+```
 sub-<label>_ses-<label>_task-<label>_acq-<label>_ce-<label>_rec-<label>_dir-<label>_run-<index>_mod-<label>_echo-<index>_flip-<index>_inv-<index>_mt-<label>_part-<label>_recording-<label>
 t1_mprage_DC_sag_HCP_256_32ch
-MPRAGE structural whole-brain
-anat
-sub-00x_T1w
-Resting_ep2d_bold_p2_s4_32ch_TR1500_2.1x2.1_68_32-head-Coil
-Resting state fMRI
-func
-sub-00x_task-rest_bold
-ep2d_diff_mddw_p2_s4_2mm_2avg_32headcoil
-Blip up diffusion MRI 
-dwi
-sub-00x_dir-up_dwi
-diff_blip_down_mddw_p2_s4_2mm_2avg_32headcoil
-Blip down diffusion MRI
-dwi
-sub-00x_dir-down_dwi
-gre_field_mapping_32ch
-Magnitude and phase images (2 files)
-fmap
-sub-00x_magnitude1
-sub-00x_magnitude2
-sub-00x_phasediff
+```
+<table>
+  <tr>
+      <td>t1_mprage_DC_sag_HCP_256_32ch</td>
+      <td>MPRAGE structural whole-brain</td>
+      <td>anat</td>
+      <td>sub-00x_T1w</td>
+   </tr>
+   <tr>
+       <td>Resting_ep2d_bold_p2_s4_32ch_TR1500_2.1x2.1_68_32-head-Coil</td>
+       <td>Resting state fMRI</td>
+       <td>func</td>
+       <td>sub-00x_task-rest_bold</td>
+   </tr>
+   <tr>
+       <td>ep2d_diff_mddw_p2_s4_2mm_2avg_32headcoil</td>
+       <td>Blip up diffusion MRI </td>
+       <td>dwi</td>
+       <td>sub-00x_dir-up_dwi</td>
+    </tr>
+       <tr>
+       <td>diff_blip_down_mddw_p2_s4_2mm_2avg_32headcoil</td>
+       <td>Blip down diffusion MRI</td>
+       <td>dwi</td>
+       <td>sub-00x_dir-down_dwi</td>
+    </tr>
+    <tr>
+        <td>gre_field_mapping_32ch</td>
+        <td>Magnitude and phase images (2 files)</td>
+        <td>fmap</td>
+        <td>sub-00x_magnitude1; sub-00x_magnitude2; sub-00x_phasediff</td>
+    </tr>
+</table>
 
 
 2.1. Install python 3 and dcm2bids
 In terminal, type:
+```
 sudo apt install python3.7
 sudo apt install python-pip
 pip install dcm2bids
-
+```
 2.2. Set up environment for dcm2bids
+```
 sudo apt install gedit
 gedit environment.yml 
-
+```
 Paste in the following:
-
+```
 name: dcm2bids
 channels:
     - conda-forge
@@ -56,11 +75,16 @@ dependencies:
     - dcm2niix
     - dcm2bids
     - pip
-
+```
 
 Add path:
+
+
 PATH=$PATH:/opt/anaconda/bin/
 export PATH
+
+
+Create conda environment
 
 conda env create -f environment.yml --prefix /storage/shared/research/cinn/2018/GUTMIC/CM_scripts/conda_env/
 
@@ -146,7 +170,7 @@ Make sure dcm2bids_config.json contains the following:
 
 
 Then type into terminal (within the conda environment):
-0_dcm2bids.sh
+2.0_dcm2bids.sh
 
 Alternatively, type:
 cd /storage/shared/research/cinn/2018/GUTMIC/CM_MRS/
@@ -156,13 +180,13 @@ And Repeat for every subject
 
 TO DO:
 Add modality agnostic file (dataset_description.json) https://bids-specification.readthedocs.io/en/stable/03-modality-agnostic-files.html 
-Add README file
+
 
 	
 2.4. Validate BIDS format using BIDS validator https://pypi.org/project/bids-validator 
 In terminal window (not in python) type:
 pip install bids_validator
-python3.7 1_validate_bids.py
+python3.7 2.1_validate_bids.py
 
 OR go to https://bids-standard.github.io/bids-validator/ and import bids parent folder (folder containing all subjects)
 
@@ -188,6 +212,11 @@ OR go to https://bids-standard.github.io/bids-validator/ and import bids parent 
 
 
 
+##################################################
+##################################################
+##################################################
+##################################################
+
 fMRI Preprocessing with fMRIprep
 Uses fMRIprep version 20.2.1
 Instructions have been borrowed and modified from:
@@ -203,6 +232,27 @@ Copy the singularity image to the computing cluster:
 In Windows command prompt, type:
 scp C:\Users\sa917034\Documents\GitHub\GUTMIC_pilot_analysis\nipreps_fmriprep_20.2.1-2020-11-06-c5149417b694.simg sa917034@cluster.act.rdg.ac.uk:/storage/shared/research/cinn/2018/GUTMIC/CM_scripts/Singularity_images
 
+Open a terminal in VM and ssh into the Reading Academic Computing Cluster (RACC). In terminal window, type:
+ssh -Y sa917034@cluster.act.rdg.ac.uk
+	Notes: The flag ‘-Y’ might be needed to enable X11 forwarding, to allow running GUI applications. 
+
+Load Anaconda and then create a new environment (called fmriprep_env) containing python 3.5. After this, install templateflow into this environment so that fMRIprep can access all the neuroimaging tools it needs to run. In the terminal window (which is now pointing to the RACC), type:
+module load anaconda
+cd /storage/shared/research/cinn/2018/GUTMIC/CM_scripts/
+conda create -n fmriprep_env python=3.5 anaconda
+source activate fmriprep_env
+pip install templateflow
+
+Import relevant templates, including the OASIS30ANTs template, which fmriprep uses as part of its workflow and MNI template. Include anything that is listed under 'output_spaces' in your call to fmriprep. In the terminal window, type:
+python
+import templateflow.api as api
+api.get(['MNI152NLin2009cAsym', 'OASIS30ANTs', 'fsaverage’])
+
+
+##################################################
+##################################################
+##################################################
+##################################################
 
 DTI analysis using TBSS
 Uses FSL 6.0.1 on an ubuntu MATE 16.04 operating system (8GB)
@@ -248,3 +298,9 @@ bet hifi_b0.nii.gz hifi_b0_brain -f 0.4 -m
 
 4.9 Run nonparametric permutation inference on the TBSS output using the GLM files available in the GLMs directory (created using FSL's Glm tool). In the terminal window, type:
 4.9_randomise.sh
+	Notes: at the end of the analysis, check the inferential_stats.txt file in the derivatives/TBSS/analysis/stats/ directory to see if any voxels in the t contrast are statistically significant. If the values in the third column are above .95, this indicates that the t value reached significance (presuming that you do not need to correct for multiple comparisons). The script will also open FSLeyes so you can view the significant voxels in the brain.
+
+##################################################
+##################################################
+##################################################
+##################################################
