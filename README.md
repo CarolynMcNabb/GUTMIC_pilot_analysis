@@ -1,4 +1,4 @@
-## GutBrainGABA pre-processing pipeline
+# GUTMIC (Pilot study) pre-processing pipeline
 
 #### CAROLYN MCNABB 2021
 Uses scripts available at https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
