@@ -182,7 +182,7 @@ dcm2bids -d /storage/shared/research/cinn/2018/GUTMIC/raw/GUTMIC_002/ -p 002 -c 
 And Repeat for every subject
 
 
-##TO DO:
+##TO DO
 Add modality agnostic file (dataset_description.json) https://bids-specification.readthedocs.io/en/stable/03-modality-agnostic-files.html 
 
 
@@ -240,7 +240,7 @@ Open a terminal in VM and ssh into the Reading Academic Computing Cluster (RACC)
 ```
 ssh -Y sa917034@cluster.act.rdg.ac.uk
 ```
-	Notes: The flag ‘-Y’ might be needed to enable X11 forwarding, to allow running GUI applications. 
+Notes: The flag ‘-Y’ might be needed to enable X11 forwarding, to allow running GUI applications. 
 
 
 Load Anaconda and then create a new environment (called fmriprep_env) containing python 3.5. After this, install templateflow into this environment so that fMRIprep can access all the neuroimaging tools it needs to run. In the terminal window (which is now pointing to the RACC), type:
@@ -266,7 +266,7 @@ Uses FSL 6.0.1 on an ubuntu MATE 16.04 operating system (8GB)
 4.0_link_bvs.sh
 ```
 
-4.1. Create a file called b0_images.nii.gz - a 4D image file containing eight b=0 volumes that have been acquired using different phase encoding directions (4*P>>A; -j and 4*A>>P; j) so the off-resonance field distortion is different in the different volumes. In the terminal window, type:
+4.1. Create a file called b0_images.nii.gz - a 4D image file containing eight b=0 volumes that have been acquired using different phase encoding directions (4 times P>>A; -j and 4 times A>>P; j) so the off-resonance field distortion is different in the different volumes. In the terminal window, type:
 ```
 4.1_join_b0s.sh
 ```
@@ -282,23 +282,23 @@ an acq_param.txt file for the b0_images, containing the acquisition parameters a
 ```
 4.3_mask.sh
 ```
-	Notes: check each subject’s mask to make sure the automatic brain extraction worked well - lower opacity to view both mask and brain images together..
+Notes: check each subject’s mask to make sure the automatic brain extraction worked well - lower opacity to view both mask and brain images together..
 ```
 fsleyes hifi_b0.nii.gz hifi_b0_brain_mask.nii.gz  -cm Yellow
 ```
-	If the mask does not cover all areas of the brain, try re-creating the mask using:
+If the mask does not cover all areas of the brain, try re-creating the mask using:
 ```
 bet hifi_b0.nii.gz hifi_b0_brain -f 0.4 -m
 ```
-	-f will make the mask bigger (bet will be less stringent)
-	This step was carried out for: sub_008, sub_015
+-f will make the mask bigger (bet will be less stringent)
+This step was carried out for: sub_008, sub_015
 
 4.4. Perform correction of eddy current-induced distortions and subject movements using FSL's eddy_openmp. In terminal window, type:
 ```
 4.4_eddy.sh
 ```
-	Note: slice-to-volume correction was not used for this analysis as it is unavailable with the CPU version of eddy and also is not expected to provide much of an improvement in healthy adult volunteers (such as those used in the current study)
-	Manually check each subject’s eddy_corrected_data.nii.gz file using FSL’s fsleyes before proceeding.
+Note: slice-to-volume correction was not used for this analysis as it is unavailable with the CPU version of eddy and also is not expected to provide much of an improvement in healthy adult volunteers (such as those used in the current study)
+Manually check each subject’s eddy_corrected_data.nii.gz file using FSL’s fsleyes before proceeding.
 
 4.5. Get mean motion parameters for each participant, including mean motion from first volume and mean motion from previous volume. In the terminal window, type:
 ```
@@ -310,7 +310,7 @@ bet hifi_b0.nii.gz hifi_b0_brain -f 0.4 -m
 4.6_outliers.R
 4.6_GLMsetup.R
 ```
-	Notes: GLM files can be found in the GLMs folder in the github directory https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
+Notes: GLM files can be found in the GLMs folder in the github directory https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
 
 4.7. Fit diffusion tensors to the eddy-corrected data. In the terminal window, type:
 ```
@@ -321,10 +321,10 @@ bet hifi_b0.nii.gz hifi_b0_brain -f 0.4 -m
 ```
 4.8_TBSS.sh
 ```
-	Notes: this script runs several different commands and requires user interaction to move onto the next stage of analysis. Read the instructions in the terminal and respond when requested.
+Notes: this script runs several different commands and requires user interaction to move onto the next stage of analysis. Read the instructions in the terminal and respond when requested.
 
 4.9 Run nonparametric permutation inference on the TBSS output using the GLM files available in the GLMs directory (created using FSL's Glm tool). In the terminal window, type:
 ```
 4.9_randomise.sh
 ```
-	Notes: at the end of the analysis, check the inferential_stats.txt file in the derivatives/TBSS/analysis/stats/ directory to see if any voxels in the t contrast are statistically significant. If the values in the third column are above .95, this indicates that the t value reached significance (presuming that you do not need to correct for multiple comparisons). The script will also open FSLeyes so you can view the significant voxels in the brain.
+Notes: at the end of the analysis, check the inferential_stats.txt file in the derivatives/TBSS/analysis/stats/ directory to see if any voxels in the t contrast are statistically significant. If the values in the third column are above .95, this indicates that the t value reached significance (presuming that you do not need to correct for multiple comparisons). The script will also open FSLeyes so you can view the significant voxels in the brain.
