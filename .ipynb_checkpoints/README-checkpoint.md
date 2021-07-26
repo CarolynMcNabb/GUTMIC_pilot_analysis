@@ -78,11 +78,10 @@ dependencies:
 ```
 
 Add path:
-
-
+```
 PATH=$PATH:/opt/anaconda/bin/
 export PATH
-
+```
 
 Create conda environment
 
