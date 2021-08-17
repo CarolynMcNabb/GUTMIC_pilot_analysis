@@ -183,7 +183,7 @@ And Repeat for every subject
 
 
 ##TO DO
-Add modality agnostic file (dataset_description.json) https://bids-specification.readthedocs.io/en/stable/03-modality-agnostic-files.html 
+Add modality agnostic file (dataset_description.json). See [bids specification](https://bids-specification.readthedocs.io/en/stable/03-modality-agnostic-files.html) for details.
 
 
 	
@@ -215,49 +215,35 @@ OR go to https://bids-standard.github.io/bids-validator/ and import bids parent 
       sub_002/
          ...
 ```
+## fMRI analysis using FSL's ICA
+Uses FSL 6.0.1 on an ubuntu MATE 16.04 operating system (8GB). Also uses python 3.8.3 for making directories in the first step (3.0). 
+3.0. Make the fMRI derivatives directory and subject subdirectories for use during the analysis. In a python console, type:
+```
+3.0_makedirs.py
+```
+
+3.1 Next, perform brain extraction of T1w scan for each participant using FSL's bet function. In the Ubuntu terminal, type:
+```
+3.1_brainextraction.sh
+```
+If brain extraction was unsuitable (you can check which subjects you were unhappy with in the brain_extraction_checks.txt file), you can run 3.1.1_betcleanup.sh to improve the extraction for those participants. Before running, you will need to open the script and edit the code to include only those subjects that need additional clean up (line 17). Once this is done, save the script and in the Ubuntu terminal, type:
+```
+3.1.1_betcleanup.sh
+```
+
+3.2. Create a B0 fieldmap for bias field correction during registration in FEAT. In the Ubuntu terminal, type:
+```
+3.2_fieldmap.sh
+```
+
+3.3. Run the first FEAT step (FEATpreproc) to produce independent components that will be used for motion correction. For this step, you need to have put the FEATpreproc.fsf file in a folder that you can access and amend the path to that folder in the 3.3_FEATpreproc.sh script. After doing that, in the Ubuntu terminal, type:
+```
+3.3_FEATpreproc.sh
+```
 
 
 
-## fMRI Preprocessing with fMRIprep
-Uses fMRIprep version 20.2.1
-Instructions have been borrowed and modified from:
-https://github.com/N-HEDGER/NEURO_PYTHON/blob/master/FMRIPREP_SINGULARITY_SLURM/readme.md (Thanks Nick)
 
-First , create a singularity image in docker on Windows PC (after downloading docker)
-In Windows command prompt, type:
-```
-docker run --privileged -t --rm  -v /var/run/docker.sock:/var/run/docker.sock   -v C:\Users\sa917034\Documents\GitHub\GUTMIC_pilot_analysis:/output   singularityware/docker2singularity     nipreps/fmriprep:20.2.1
-```
-Note that the singularity file is huge so a copy has been saved in F:\1_Singularity_fMRIprep (external hard drive) as a back-up. C drive version should be deleted for space purposes after copying to the computing cluster.
-
-Copy the singularity image to the computing cluster:
-In Windows command prompt, type:
-```
-scp C:\Users\sa917034\Documents\GitHub\GUTMIC_pilot_analysis\nipreps_fmriprep_20.2.1-2020-11-06-c5149417b694.simg sa917034@cluster.act.rdg.ac.uk:/storage/shared/research/cinn/2018/GUTMIC/CM_scripts/Singularity_images
-```
-
-Open a terminal in VM and ssh into the Reading Academic Computing Cluster (RACC). In terminal window, type:
-```
-ssh -Y sa917034@cluster.act.rdg.ac.uk
-```
-Notes: The flag ‘-Y’ might be needed to enable X11 forwarding, to allow running GUI applications. 
-
-
-Load Anaconda and then create a new environment (called fmriprep_env) containing python 3.5. After this, install templateflow into this environment so that fMRIprep can access all the neuroimaging tools it needs to run. In the terminal window (which is now pointing to the RACC), type:
-module load anaconda
-```
-cd /storage/shared/research/cinn/2018/GUTMIC/CM_scripts/
-conda create -n fmriprep_env python=3.5 anaconda
-source activate fmriprep_env
-pip install templateflow
-```
-
-Import relevant templates, including the OASIS30ANTs template, which fmriprep uses as part of its workflow and MNI template. Include anything that is listed under 'output_spaces' in your call to fmriprep. In the terminal window, type:
-```
-python
-import templateflow.api as api
-api.get(['MNI152NLin2009cAsym', 'OASIS30ANTs', 'fsaverage’])
-```
 
 ## DTI analysis using TBSS
 Uses FSL 6.0.1 on an ubuntu MATE 16.04 operating system (8GB)
