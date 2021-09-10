@@ -182,7 +182,7 @@ dcm2bids -d /storage/shared/research/cinn/2018/GUTMIC/raw/GUTMIC_002/ -p 002 -c 
 And Repeat for every subject
 
 
-##TO DO
+### TO DO
 Add modality agnostic file (dataset_description.json). See [bids specification](https://bids-specification.readthedocs.io/en/stable/03-modality-agnostic-files.html) for details.
 
 
@@ -241,9 +241,140 @@ If brain extraction was unsuitable (you can check which subjects you were unhapp
 3.3_FEATpreproc.sh
 ```
 
+3.4. To save on space - I will not perform additional motion correction with FIX for this dataset (I have deleted the melodic.ica folders from each of the subjects' directories). Instead, I'll just jump into the group ICA.
+
+3.5. Warp functional data from subject space into standard space. In Ubuntu terminal window, type:
+```
+3.5_warp2std.sh
+```
+
+3.6. Smooth the functional data (now in standard space) using a 5 mm Gausian kernel and then downsample to 2mm (currently in 1mm space) to increase speed of MELODIC. In ubuntu terminal, type:
+```
+3.6_smoothdownsample.sh
+```
+In addition, create a GLM containing the faecal GABA, Glutamate and Glutamine levels from LCMS. In R, run the following script:
+```
+3.6_GLMSetup.R
+```
+After doing this, open the GLM gui in FSL. In the ubuntu terminal, type:
+```
+Glm
+```
+In Glm setup window:
+1. Change first drop down menu to "Higher-level/non-timeseries design"
+1. Change #inputs to 20 (i.e. number of participants)
+
+In General Linear Model window:
+1. Change "Number of main EVs" to 5
+1. Click "Paste" 
+
+In Higher-level model - paste window:
+1. Click "clear"
+1. Paste GLM from 3.6_GLMSetup.R by highlighting and copying all content from GLM_faecalLCMS.csv, then clicking inside the paste window using the scroller button of your mouse.
+1. Click "OK"
+
+In General Linear Model window:
+1. Enter the following names for the EVs:
+    "age","hand","GABA","Glutamate", "Glutamine"
+1. Click on "Contrasts & F-tests" tab
+1. Change number of "Contrasts" to 6
+1. Change number of F tests to 3
+1. Contrasts should be set up as follows:
+<table>
+  <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>F1</td>
+      <td>F2</td>
+      <td>F3</td>
+
+  <tr>
+      <td>GABA+</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>🟨</td>
+      <td></td>
+      <td></td>
+   </tr>
+   <tr>
+       <td>GABA-</td>
+       <td>0</td>
+       <td>0</td>
+       <td>-1</td>
+       <td>0</td>
+       <td>0</td>
+      <td>🟨</td>
+      <td></td>
+      <td></td>
+   </tr>
+  <tr>
+      <td>Glutamate+</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td></td>
+      <td>🟨</td>
+      <td></td>
+   </tr>
+   <tr>
+       <td>Glutamate-</td>
+       <td>0</td>
+       <td>0</td>
+       <td>0</td>
+       <td>-1</td>
+       <td>0</td>
+       <td></td>
+      <td>🟨</td>
+      <td></td>
+   </tr>
+     <tr>
+      <td>Glutamine+</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td></td>
+      <td></td>
+      <td>🟨</td>
+   </tr>
+   <tr>
+       <td>Glutamine-</td>
+       <td>0</td>
+       <td>0</td>
+       <td>0</td>
+       <td>0</td>
+       <td>-1</td>
+       <td></td>
+      <td></td>
+      <td>🟨</td>
+   </tr>
+</table>
 
 
 
+
+Notes: GLM files can be found in the GLMs folder in the github directory https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
+
+
+3.7. Create group-level independent components using FSL's MELODIC. In the ubuntu terminal, type:
+```
+3.7_melodic.sh
+```
+
+3.8. Run dual regression in FSL to estimate a "version" of each of the group-level spatial maps for each subject. Dual regression regresses the group-spatial-maps into each subject's 4D dataset to give a set of timecourses (stage 1) and then regresses those timecourses into the same 4D dataset to get a subject-specific set of spatial maps (stage 2). In the ubuntu terminal, type:
+```
+3.8_dualregression
+```
 
 ## DTI analysis using TBSS
 Uses FSL 6.0.1 on an ubuntu MATE 16.04 operating system (8GB)
