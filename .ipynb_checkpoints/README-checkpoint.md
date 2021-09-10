@@ -3,7 +3,7 @@
 #### CAROLYN MCNABB 2021
 Uses scripts available at https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
 
-
+***
 ###  VM setup
 1.1. Create Vanilla VM in nutanix https://rrc.reading.ac.uk:9440/console/#login 
 1.2. Open VM in NoMachine by pasting IP address from Nutanix
@@ -11,7 +11,7 @@ Uses scripts available at https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis
 ```
 rm -r ~/.mozilla #to clear any open firefox applications
 ```
-
+***
 ### Convert dicoms to BIDS format
 N.B. Conversion of diffusion data to BIDS format may later be updated to use ADWI-BIDS https://arxiv.org/pdf/2103.14485.pdf 
 
@@ -196,7 +196,7 @@ python3.7 2.1_validate_bids.py
 ```
 OR go to https://bids-standard.github.io/bids-validator/ and import bids parent folder (folder containing all subjects)
 
-2.5 Finalise folder structure, including making directories (mkdir) for analysis
+2.5 Finalise folder structure, including making directories (mkdir) for analysis:
 ```
 /storage/shared/research/cinn/2018/GUTMIC/
    func_diff/
@@ -215,6 +215,8 @@ OR go to https://bids-standard.github.io/bids-validator/ and import bids parent 
       sub_002/
          ...
 ```
+
+***
 ## fMRI analysis using FSL's ICA
 Uses FSL 6.0.1 on an ubuntu MATE 16.04 operating system (8GB). Also uses python 3.8.3 for making directories in the first step (3.0). 
 3.0. Make the fMRI derivatives directory and subject subdirectories for use during the analysis. In a python console, type:
@@ -260,7 +262,11 @@ After doing this, open the GLM gui in FSL. In the ubuntu terminal, type:
 ```
 Glm
 ```
-In Glm setup window:
+
+<table>
+   <tr>
+       <td>In Glm setup window:
+       
 1. Change first drop down menu to "Higher-level/non-timeseries design"
 1. Change #inputs to 20 (i.e. number of participants)
 
@@ -310,7 +316,7 @@ In General Linear Model window:
        <td>-1</td>
        <td>0</td>
        <td>0</td>
-      <td>🟨</td>
+      <td></td>
       <td></td>
       <td></td>
    </tr>
@@ -333,7 +339,7 @@ In General Linear Model window:
        <td>-1</td>
        <td>0</td>
        <td></td>
-      <td>🟨</td>
+      <td></td>
       <td></td>
    </tr>
      <tr>
@@ -356,13 +362,16 @@ In General Linear Model window:
        <td>-1</td>
        <td></td>
       <td></td>
-      <td>🟨</td>
+      <td></td>
    </tr>
 </table>
 
+1. Save as "ICA_LCMS" in "/storage/shared/research/cinn/2018/GUTMIC/CM_scripts/GLMs"
+1. Exit Glm GUI
 
-
-
+</td>
+   </tr>
+</table>
 Notes: GLM files can be found in the GLMs folder in the github directory https://github.com/CarolynMcNabb/GUTMIC_pilot_analysis.git 
 
 
@@ -373,9 +382,15 @@ Notes: GLM files can be found in the GLMs folder in the github directory https:/
 
 3.8. Run dual regression in FSL to estimate a "version" of each of the group-level spatial maps for each subject. Dual regression regresses the group-spatial-maps into each subject's 4D dataset to give a set of timecourses (stage 1) and then regresses those timecourses into the same 4D dataset to get a subject-specific set of spatial maps (stage 2). In the ubuntu terminal, type:
 ```
-3.8_dualregression
+3.8_dualregression.sh
 ```
 
+3.9. Dual regression will not perform an ANOVA and only t-tests can be viewed in the dual regression output directory at present. To run F-tests you need to run randomise on the dual regression output. Although this isn't necessary for the GUTMIC pilot, it may be required for the GutBrainGABA study so I include it here for completeness. In the ubuntu terminal window, type:
+```
+3.9_randomise.sh
+```
+
+***
 ## DTI analysis using TBSS
 Uses FSL 6.0.1 on an ubuntu MATE 16.04 operating system (8GB)
 4.0. FSL prefers bvec and bval files to be named bvecs and bvals for analysis purposes. First step is to link the bval and bvec files in the BIDS folders to the preprocessing directory. In the terminal window, type:
@@ -445,3 +460,5 @@ Notes: this script runs several different commands and requires user interaction
 4.9_randomise.sh
 ```
 Notes: at the end of the analysis, check the inferential_stats.txt file in the derivatives/TBSS/analysis/stats/ directory to see if any voxels in the t contrast are statistically significant. If the values in the third column are above .95, this indicates that the t value reached significance (presuming that you do not need to correct for multiple comparisons). The script will also open FSLeyes so you can view the significant voxels in the brain.
+
+***

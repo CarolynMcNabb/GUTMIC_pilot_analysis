@@ -22,6 +22,6 @@ analysis_path=/storage/shared/research/cinn/2018/GUTMIC/func_diff/derivatives/fM
 script_path=/storage/shared/research/cinn/2018/GUTMIC/CM_scripts
 
 echo "MELODIC running - will produce 20 components"
-melodic -i ${script_path}/melodic_inputlist.txt -o ${analysis_path}/melodic_components --nobet --bgthreshold=10 --tr=.72 --mmthresh=0.5 –-dim=20
+melodic -i ${script_path}/melodic_inputlist.txt -o ${analysis_path}/melodic_components --nobet --bgthreshold=10 --tr=.72 --mmthresh=0.5 --dim=20
 
 

@@ -16,4 +16,4 @@ echo "Running dual regression for GUTMIC data"
 melodic -i ${script_path}/melodic_inputlist.txt -o ${analysis_path}/melodic_components --nobet --bgthreshold=10 --tr=.72 --mmthresh=0.5 –-dim=20
 
 
-dual_regression ${analysis_path}/melodic_components 1 /storage/shared/research/cinn/2017/MOTIVC/oct17/GLM_eigen_Ftest.mat /storage/shared/research/cinn/2017/MOTIVC/oct17/GLM_eigen_Ftest.con 5000 /storage/shared/research/cinn/2017/MOTIVC/oct17/DR_eigen_Ftest.DR `cat /storage/shared/research/cinn/2017/MOTIVC/oct17/inputlist_resting.txt`
+dual_regression ${analysis_path}/melodic_components 1 ${script_path}/ICA_LCMS.mat ${script_path}/ICA_LCMS.con 5000 ${analysis_path}/dual_regression.DR `cat ${script_path}/melodic_inputlist.txt`
